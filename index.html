@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#07110d">
+<title>MS2 · Return Protocol</title>
+<style>
+:root{
+  --bg:#07110d;
+  --panel:#0b1a13;
+  --green:#9cffb8;
+  --green2:#52d87a;
+  --muted:#6d8b77;
+  --red:#ff6b6b;
+  --amber:#ffd36b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--green);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;overflow:hidden}
+body{min-height:100dvh}
+.screen{position:relative;min-height:100dvh;padding:max(22px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center}
+.noise{position:absolute;inset:0;opacity:.08;pointer-events:none;background-image:radial-gradient(circle at 20% 20%,#fff 0 1px,transparent 1px),radial-gradient(circle at 80% 40%,#fff 0 1px,transparent 1px);background-size:11px 13px,17px 19px;animation:flicker 1.4s infinite}
+@keyframes flicker{0%,100%{opacity:.05}50%{opacity:.11}}
+.card{width:min(560px,100%);border:1px solid rgba(156,255,184,.3);background:linear-gradient(180deg,rgba(11,26,19,.96),rgba(5,14,10,.94));box-shadow:0 0 40px rgba(82,216,122,.08);padding:20px;border-radius:14px;position:relative;z-index:2}
+.logo{font-size:30px;font-weight:800;letter-spacing:.12em;margin-bottom:2px}
+.sub{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.line{height:1px;background:linear-gradient(90deg,transparent,rgba(156,255,184,.5),transparent);margin:16px 0}
+.meta{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:13px;color:#b7d6c0}
+.meta span:nth-child(even){color:var(--green)}
+.prompt{margin-top:18px;font-size:13px;color:#b7d6c0}
+.inputrow{display:flex;gap:8px;margin-top:10px}
+input{flex:1;min-width:0;border:1px solid rgba(156,255,184,.35);background:#020806;color:var(--green);padding:14px 12px;border-radius:8px;font:inherit;font-size:16px;outline:none;text-transform:uppercase}
+input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(82,216,122,.08)}
+button{border:1px solid var(--green2);background:#0e2419;color:var(--green);padding:0 14px;border-radius:8px;font:inherit;font-weight:700}
+.status{height:22px;margin-top:10px;font-size:12px}
+.denied{color:var(--red)}
+.granted{color:var(--green)}
+.footer{margin-top:18px;color:#536f5d;font-size:11px}
+#journey{display:none;position:absolute;inset:0;z-index:5;background:linear-gradient(#06100d 0 56%,#0e1b14 56% 100%);overflow:hidden}
+.sky{position:absolute;inset:0 0 44% 0;background:radial-gradient(circle at 50% 110%,rgba(92,164,110,.18),transparent 50%)}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#b5ffc7 1px,transparent 1px);background-size:41px 41px;opacity:.25;animation:skyMove 18s linear infinite}
+@keyframes skyMove{from{transform:translateX(0)}to{transform:translateX(-164px)}}
+.mountains{position:absolute;left:-30%;bottom:34%;width:180%;height:30%;background:
+linear-gradient(135deg,transparent 0 48%,#10271b 49% 58%,transparent 59%) 0 100%/180px 120px repeat-x;
+opacity:.95;animation:mountMove 9s linear infinite}
+@keyframes mountMove{from{transform:translateX(0)}to{transform:translateX(-180px)}}
+.ground{position:absolute;left:0;right:0;bottom:0;height:44%;background:linear-gradient(#0c1c13,#050b08)}
+.track{position:absolute;left:-10%;right:-10%;bottom:20%;height:7px;background:#738375;transform:rotate(-1deg)}
+.track:before,.track:after{content:"";position:absolute;left:0;right:0;height:2px;background:#2b3a2f}
+.track:before{top:-7px}.track:after{top:12px}
+.sleepers{position:absolute;left:-20%;right:-20%;bottom:18.3%;height:34px;background:repeating-linear-gradient(90deg,transparent 0 40px,#2e3b32 40px 50px);transform:rotate(-1deg);animation:sleepersMove .7s linear infinite}
+@keyframes sleepersMove{from{transform:translateX(0) rotate(-1deg)}to{transform:translateX(-50px) rotate(-1deg)}}
+.trainWrap{position:absolute;left:50%;bottom:22%;transform:translateX(-50%);width:min(82vw,430px);height:105px;animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+.loco{position:absolute;left:0;bottom:15px;width:150px;height:64px;background:#182a20;border:2px solid #8ee8a7;border-radius:8px 18px 6px 6px;box-shadow:0 0 18px rgba(142,232,167,.12)}
+.cabin{position:absolute;left:78px;top:-35px;width:58px;height:42px;background:#182a20;border:2px solid #8ee8a7;border-bottom:0;border-radius:6px 6px 0 0}
+.window{position:absolute;left:90px;top:-25px;width:34px;height:20px;background:#ffd36b;opacity:.85;border-radius:3px}
+.chimney{position:absolute;left:28px;top:-33px;width:22px;height:37px;background:#182a20;border:2px solid #8ee8a7;border-radius:4px 4px 0 0}
+.car{position:absolute;left:155px;bottom:15px;width:170px;height:58px;border:2px solid #8ee8a7;background:#122118;border-radius:7px}
+.car:before,.car:after{content:"";position:absolute;top:13px;width:42px;height:21px;background:#ffd36b;opacity:.75;border-radius:3px}
+.car:before{left:18px}.car:after{right:18px}
+.wheel{position:absolute;bottom:-14px;width:27px;height:27px;border-radius:50%;background:#07100c;border:4px solid #8ee8a7;animation:spin .6s linear infinite}
+.w1{left:25px}.w2{left:104px}.w3{left:185px}.w4{left:275px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.smoke{position:absolute;left:18px;top:-62px;font-size:23px;opacity:.28;animation:smoke 2.5s ease-out infinite}
+@keyframes smoke{0%{transform:translate(0,0) scale(.7);opacity:.3}100%{transform:translate(-45px,-55px) scale(1.7);opacity:0}}
+.overlay{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:max(28px,env(safe-area-inset-top));pointer-events:none}
+.travelText{text-align:center;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:#90b59a}
+.progress{width:min(78vw,380px);height:3px;background:#1a3223;margin:10px auto 0;border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:#91f2ac;animation:progress 6.5s linear forwards}
+@keyframes progress{to{width:100%}}
+#final{display:none;position:absolute;inset:0;z-index:10;background:rgba(4,10,7,.88);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:24px;text-align:center}
+.finalInner{max-width:520px}
+.end{font-size:12px;letter-spacing:.2em;color:#76917f;text-transform:uppercase;margin-bottom:14px}
+.big{font-size:clamp(30px,9vw,54px);font-weight:800;line-height:1.05;letter-spacing:.02em;color:#c8ffd7;text-shadow:0 0 24px rgba(126,255,158,.16)}
+.flower{font-size:42px;margin-top:18px}
+.small{margin-top:12px;color:#7c9a84;font-size:12px}
+.flash{animation:flash .4s 2}
+@keyframes flash{50%{opacity:.35}}
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="noise"></div>
+  <main class="card" id="lock">
+    <div class="logo">MS2</div>
+    <div class="sub">Return Protocol // Intercepted Signal</div>
+    <div class="line"></div>
+    <div class="meta">
+      <span>SIGNAL</span><span>DETECTED</span>
+      <span>DESTINATION</span><span>HOME</span>
+      <span>TRANSPORT</span><span>RAIL</span>
+      <span>STATUS</span><span>LOCKED</span>
+    </div>
+    <div class="line"></div>
+    <div class="prompt">ENTER ACCESS KEY:</div>
+    <div class="inputrow">
+      <input id="key" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="> _" aria-label="Access key">
+      <button id="go">RUN</button>
+    </div>
+    <div id="status" class="status"></div>
+    <div class="footer">MS2 // VERSION 2.2 // SINGLE-KEY RETURN SEQUENCE</div>
+  </main>
+
+  <section id="journey" aria-hidden="true">
+    <div class="sky"><div class="stars"></div></div>
+    <div class="mountains"></div>
+    <div class="ground"></div>
+    <div class="sleepers"></div>
+    <div class="track"></div>
+    <div class="trainWrap">
+      <div class="smoke">☁</div>
+      <div class="loco"><div class="cabin"></div><div class="window"></div><div class="chimney"></div></div>
+      <div class="car"></div>
+      <div class="wheel w1"></div><div class="wheel w2"></div><div class="wheel w3"></div><div class="wheel w4"></div>
+    </div>
+    <div class="overlay">
+      <div class="travelText">
+        RETURN SEQUENCE INITIATED
+        <div class="progress"><div class="bar"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="final">
+    <div class="finalInner">
+      <div class="end">END OF LINE</div>
+      <div class="big">FELIZ REGRESO</div>
+      <div class="flower">🌻</div>
+      <div class="small">MS2 // SIGNAL DELIVERED</div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const ACCESS_KEY = "VIKINGO";
+  const input = document.getElementById("key");
+  const go = document.getElementById("go");
+  const status = document.getElementById("status");
+  const lock = document.getElementById("lock");
+  const journey = document.getElementById("journey");
+  const final = document.getElementById("final");
+
+  function run() {
+    const value = input.value.trim().toUpperCase();
+    if (!value) {
+      status.textContent = "KEY REQUIRED.";
+      status.className = "status denied";
+      return;
+    }
+    if (value !== ACCESS_KEY) {
+      status.textContent = "ACCESS DENIED // INVALID KEY";
+      status.className = "status denied";
+      lock.classList.remove("flash");
+      void lock.offsetWidth;
+      lock.classList.add("flash");
+      input.select();
+      return;
+    }
+
+    status.textContent = "ACCESS GRANTED";
+    status.className = "status granted";
+    input.blur();
+
+    setTimeout(() => {
+      lock.style.display = "none";
+      journey.style.display = "block";
+      journey.setAttribute("aria-hidden","false");
+      setTimeout(() => {
+        final.style.display = "flex";
+      }, 6500);
+    }, 650);
+  }
+
+  go.addEventListener("click", run);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") run();
+  });
+
+  setTimeout(() => input.focus(), 450);
+})();
+</script>
+</body>
+</html>
