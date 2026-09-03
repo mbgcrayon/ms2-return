@@ -2,184 +2,158 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#07110d">
-<title>MS2 · Return Protocol</title>
+<meta name="theme-color" content="#020603">
+<title>MS2 // Return Protocol</title>
 <style>
-:root{
-  --bg:#07110d;
-  --panel:#0b1a13;
-  --green:#9cffb8;
-  --green2:#52d87a;
-  --muted:#6d8b77;
-  --red:#ff6b6b;
-  --amber:#ffd36b;
-}
+:root{--bg:#020603;--g:#79d45a;--g2:#b8ff83;--dim:#315d28;--yellow:#e4e85e}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--green);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;overflow:hidden}
-body{min-height:100dvh}
-.screen{position:relative;min-height:100dvh;padding:max(22px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center}
-.noise{position:absolute;inset:0;opacity:.08;pointer-events:none;background-image:radial-gradient(circle at 20% 20%,#fff 0 1px,transparent 1px),radial-gradient(circle at 80% 40%,#fff 0 1px,transparent 1px);background-size:11px 13px,17px 19px;animation:flicker 1.4s infinite}
-@keyframes flicker{0%,100%{opacity:.05}50%{opacity:.11}}
-.card{width:min(560px,100%);border:1px solid rgba(156,255,184,.3);background:linear-gradient(180deg,rgba(11,26,19,.96),rgba(5,14,10,.94));box-shadow:0 0 40px rgba(82,216,122,.08);padding:20px;border-radius:14px;position:relative;z-index:2}
-.logo{font-size:30px;font-weight:800;letter-spacing:.12em;margin-bottom:2px}
-.sub{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
-.line{height:1px;background:linear-gradient(90deg,transparent,rgba(156,255,184,.5),transparent);margin:16px 0}
-.meta{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:13px;color:#b7d6c0}
-.meta span:nth-child(even){color:var(--green)}
-.prompt{margin-top:18px;font-size:13px;color:#b7d6c0}
-.inputrow{display:flex;gap:8px;margin-top:10px}
-input{flex:1;min-width:0;border:1px solid rgba(156,255,184,.35);background:#020806;color:var(--green);padding:14px 12px;border-radius:8px;font:inherit;font-size:16px;outline:none;text-transform:uppercase}
-input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(82,216,122,.08)}
-button{border:1px solid var(--green2);background:#0e2419;color:var(--green);padding:0 14px;border-radius:8px;font:inherit;font-weight:700}
-.status{height:22px;margin-top:10px;font-size:12px}
-.denied{color:var(--red)}
-.granted{color:var(--green)}
-.footer{margin-top:18px;color:#536f5d;font-size:11px}
-#journey{display:none;position:absolute;inset:0;z-index:5;background:linear-gradient(#06100d 0 56%,#0e1b14 56% 100%);overflow:hidden}
-.sky{position:absolute;inset:0 0 44% 0;background:radial-gradient(circle at 50% 110%,rgba(92,164,110,.18),transparent 50%)}
-.stars{position:absolute;inset:0;background-image:radial-gradient(#b5ffc7 1px,transparent 1px);background-size:41px 41px;opacity:.25;animation:skyMove 18s linear infinite}
-@keyframes skyMove{from{transform:translateX(0)}to{transform:translateX(-164px)}}
-.mountains{position:absolute;left:-30%;bottom:34%;width:180%;height:30%;background:
-linear-gradient(135deg,transparent 0 48%,#10271b 49% 58%,transparent 59%) 0 100%/180px 120px repeat-x;
-opacity:.95;animation:mountMove 9s linear infinite}
-@keyframes mountMove{from{transform:translateX(0)}to{transform:translateX(-180px)}}
-.ground{position:absolute;left:0;right:0;bottom:0;height:44%;background:linear-gradient(#0c1c13,#050b08)}
-.track{position:absolute;left:-10%;right:-10%;bottom:20%;height:7px;background:#738375;transform:rotate(-1deg)}
-.track:before,.track:after{content:"";position:absolute;left:0;right:0;height:2px;background:#2b3a2f}
-.track:before{top:-7px}.track:after{top:12px}
-.sleepers{position:absolute;left:-20%;right:-20%;bottom:18.3%;height:34px;background:repeating-linear-gradient(90deg,transparent 0 40px,#2e3b32 40px 50px);transform:rotate(-1deg);animation:sleepersMove .7s linear infinite}
-@keyframes sleepersMove{from{transform:translateX(0) rotate(-1deg)}to{transform:translateX(-50px) rotate(-1deg)}}
-.trainWrap{position:absolute;left:50%;bottom:22%;transform:translateX(-50%);width:min(82vw,430px);height:105px;animation:bob 1.2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
-.loco{position:absolute;left:0;bottom:15px;width:150px;height:64px;background:#182a20;border:2px solid #8ee8a7;border-radius:8px 18px 6px 6px;box-shadow:0 0 18px rgba(142,232,167,.12)}
-.cabin{position:absolute;left:78px;top:-35px;width:58px;height:42px;background:#182a20;border:2px solid #8ee8a7;border-bottom:0;border-radius:6px 6px 0 0}
-.window{position:absolute;left:90px;top:-25px;width:34px;height:20px;background:#ffd36b;opacity:.85;border-radius:3px}
-.chimney{position:absolute;left:28px;top:-33px;width:22px;height:37px;background:#182a20;border:2px solid #8ee8a7;border-radius:4px 4px 0 0}
-.car{position:absolute;left:155px;bottom:15px;width:170px;height:58px;border:2px solid #8ee8a7;background:#122118;border-radius:7px}
-.car:before,.car:after{content:"";position:absolute;top:13px;width:42px;height:21px;background:#ffd36b;opacity:.75;border-radius:3px}
-.car:before{left:18px}.car:after{right:18px}
-.wheel{position:absolute;bottom:-14px;width:27px;height:27px;border-radius:50%;background:#07100c;border:4px solid #8ee8a7;animation:spin .6s linear infinite}
-.w1{left:25px}.w2{left:104px}.w3{left:185px}.w4{left:275px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.smoke{position:absolute;left:18px;top:-62px;font-size:23px;opacity:.28;animation:smoke 2.5s ease-out infinite}
-@keyframes smoke{0%{transform:translate(0,0) scale(.7);opacity:.3}100%{transform:translate(-45px,-55px) scale(1.7);opacity:0}}
-.overlay{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:max(28px,env(safe-area-inset-top));pointer-events:none}
-.travelText{text-align:center;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:#90b59a}
-.progress{width:min(78vw,380px);height:3px;background:#1a3223;margin:10px auto 0;border-radius:99px;overflow:hidden}
-.bar{height:100%;width:0;background:#91f2ac;animation:progress 6.5s linear forwards}
-@keyframes progress{to{width:100%}}
-#final{display:none;position:absolute;inset:0;z-index:10;background:rgba(4,10,7,.88);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:24px;text-align:center}
-.finalInner{max-width:520px}
-.end{font-size:12px;letter-spacing:.2em;color:#76917f;text-transform:uppercase;margin-bottom:14px}
-.big{font-size:clamp(30px,9vw,54px);font-weight:800;line-height:1.05;letter-spacing:.02em;color:#c8ffd7;text-shadow:0 0 24px rgba(126,255,158,.16)}
-.flower{font-size:42px;margin-top:18px}
-.small{margin-top:12px;color:#7c9a84;font-size:12px}
-.flash{animation:flash .4s 2}
-@keyframes flash{50%{opacity:.35}}
+html,body{margin:0;background:var(--bg);color:var(--g);font-family:"Courier New",ui-monospace,monospace;min-height:100%;overscroll-behavior:none}
+body{padding:max(12px,env(safe-area-inset-top)) 10px max(14px,env(safe-area-inset-bottom))}
+#app{max-width:760px;margin:auto}
+.crt{position:relative;border:3px solid var(--dim);box-shadow:inset 0 0 0 2px #071308;padding:18px;min-height:560px;background:#010402;overflow:hidden}
+.crt:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
+.pixel{font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-shadow:2px 0 #163d13}
+.logo{font-size:48px;line-height:.9;margin:4px 0 8px}
+.kicker{font-size:13px;line-height:1.55}
+.sound{position:absolute;right:15px;top:15px;font-size:10px;color:var(--dim);z-index:3}
+.rule{border-top:3px dashed var(--dim);margin:18px 0}
+.meta{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:14px}.meta b{color:var(--g2)}
+label{display:block;margin:22px 0 8px;font-size:14px}
+.row{display:flex;gap:8px}
+input{width:100%;min-width:0;background:#000;border:2px solid var(--g);color:var(--g2);padding:13px;font:700 18px "Courier New",monospace;border-radius:0;text-transform:uppercase;outline:none}
+button{min-height:48px;background:var(--g);color:#041006;border:0;padding:0 18px;font:900 17px "Courier New",monospace;letter-spacing:.08em;border-radius:0}
+#status{height:25px;margin-top:12px;font-size:13px}.hint{margin-top:28px;color:var(--dim);font-size:11px}.hidden{display:none!important}
+#game{padding:0;touch-action:manipulation}
+.hud{height:54px;display:flex;justify-content:space-between;align-items:center;padding:0 12px;border-bottom:2px solid var(--dim);font-size:11px;position:relative;z-index:4}
+.stage{height:430px;position:relative;overflow:hidden;background:#010402}
+.starfield{position:absolute;inset:0 0 120px;background-image:radial-gradient(var(--g) 1.2px,transparent 1.2px);background-size:43px 37px;opacity:.55;animation:stars 10s linear infinite}
+@keyframes stars{to{background-position:-172px 0}}
+.moon{position:absolute;right:11%;top:50px;width:38px;height:38px;border-radius:50%;background:var(--g);box-shadow:12px -5px 0 2px var(--bg)}
+.mountain{position:absolute;left:-80px;right:-80px;bottom:110px;height:120px;opacity:.5;background:linear-gradient(135deg,transparent 0 47%,var(--dim) 48% 51%,transparent 52%) 0 100%/145px 100px repeat-x;animation:scroll 6s linear infinite}
+@keyframes scroll{to{transform:translateX(-145px)}}
+.ground{position:absolute;left:0;right:0;bottom:68px;height:8px;border-top:3px solid var(--g);border-bottom:3px solid var(--dim)}
+.sleepers{position:absolute;left:-60px;right:-60px;bottom:49px;height:16px;background:repeating-linear-gradient(90deg,transparent 0 28px,var(--dim) 28px 39px);animation:sleep .45s linear infinite}
+@keyframes sleep{to{transform:translateX(-39px)}}
+.train{position:absolute;left:12%;bottom:77px;width:132px;height:61px}
+.engine{position:absolute;left:45px;bottom:0;width:70px;height:42px;border:3px solid var(--g);background:#061006}
+.engine:before{content:"";position:absolute;left:11px;top:-27px;width:18px;height:28px;border:3px solid var(--g);background:#061006}
+.engine:after{content:"";position:absolute;right:5px;top:-20px;width:29px;height:20px;border:3px solid var(--g);background:var(--yellow)}
+.car{position:absolute;left:0;bottom:0;width:48px;height:36px;border:3px solid var(--g);background:#061006}
+.wheel{position:absolute;bottom:-10px;width:18px;height:18px;border:3px dotted var(--g);border-radius:50%;animation:spin .35s linear infinite}
+.w1{left:10px}.w2{left:54px}.w3{left:94px}@keyframes spin{to{transform:rotate(360deg)}}
+.smoke{position:absolute;left:59px;bottom:59px;color:var(--dim);font-size:24px;animation:puff 1.2s ease-out infinite}@keyframes puff{to{transform:translate(-35px,-35px);opacity:0}}
+.obstacle{position:absolute;bottom:76px;right:-55px;width:36px;height:45px;border:3px solid var(--g);background:repeating-linear-gradient(135deg,var(--dim) 0 5px,#010402 5px 10px)}
+.sign{position:absolute;bottom:90px;right:-150px;width:125px;padding:9px 5px;border:3px solid var(--g);background:#020603;text-align:center;font-weight:900;font-size:13px}
+.flower{position:absolute;bottom:76px;right:-80px;font-size:46px}
+#tap{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:12px;letter-spacing:.12em;color:var(--g)}
+#message{position:absolute;left:12px;right:12px;top:70px;text-align:center;font-size:12px;color:var(--g2)}
+.flash{animation:hit .15s 3}@keyframes hit{50%{opacity:.25}}
+#final{min-height:560px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px}
+.finalSmall{font-size:12px;color:var(--dim);letter-spacing:.15em}
+.finalTitle{margin:22px 0 10px;font-family:"Courier New",monospace;font-size:clamp(34px,11vw,66px);font-weight:900;line-height:1;letter-spacing:.06em;color:var(--yellow);text-shadow:4px 0 #687323,0 4px #687323}
+.sun{font-size:52px;margin:14px 0}.retry{margin-top:32px;background:transparent;border:2px solid var(--dim);color:var(--g);font-size:12px}
+@media(max-width:420px){.crt{min-height:520px;padding:15px}.stage{height:390px}.hud{font-size:9px}.logo{font-size:43px}.train{left:7%;transform:scale(.9);transform-origin:left bottom}}
 </style>
 </head>
 <body>
-<div class="screen">
-  <div class="noise"></div>
-  <main class="card" id="lock">
-    <div class="logo">MS2</div>
-    <div class="sub">Return Protocol // Intercepted Signal</div>
-    <div class="line"></div>
-    <div class="meta">
-      <span>SIGNAL</span><span>DETECTED</span>
-      <span>DESTINATION</span><span>HOME</span>
-      <span>TRANSPORT</span><span>RAIL</span>
-      <span>STATUS</span><span>LOCKED</span>
-    </div>
-    <div class="line"></div>
-    <div class="prompt">ENTER ACCESS KEY:</div>
-    <div class="inputrow">
-      <input id="key" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="> _" aria-label="Access key">
-      <button id="go">RUN</button>
-    </div>
-    <div id="status" class="status"></div>
-    <div class="footer">MS2 // VERSION 2.2 // SINGLE-KEY RETURN SEQUENCE</div>
-  </main>
+<div id="app">
+<section id="lock" class="crt">
+<div class="sound pixel">SOUND: ON</div>
+<div class="logo pixel">MS2</div>
+<div class="kicker pixel">RETURN PROTOCOL<br>// INTERCEPTED SIGNAL</div>
+<div class="rule"></div>
+<div class="meta pixel"><span>SIGNAL</span><b>DETECTED</b><span>DESTINATION</span><b>HOME</b><span>TRANSPORT</span><b>RAIL</b><span>STATUS</span><b>LOCKED</b></div>
+<div class="rule"></div>
+<form id="form">
+<label class="pixel" for="key">ENTER ACCESS KEY:</label>
+<div class="row"><input id="key" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="> _"><button>RUN</button></div>
+<div id="status" class="pixel"></div>
+</form>
+<div class="hint pixel">MS2 // SINGLE-KEY RETURN SEQUENCE</div>
+</section>
 
-  <section id="journey" aria-hidden="true">
-    <div class="sky"><div class="stars"></div></div>
-    <div class="mountains"></div>
-    <div class="ground"></div>
-    <div class="sleepers"></div>
-    <div class="track"></div>
-    <div class="trainWrap">
-      <div class="smoke">☁</div>
-      <div class="loco"><div class="cabin"></div><div class="window"></div><div class="chimney"></div></div>
-      <div class="car"></div>
-      <div class="wheel w1"></div><div class="wheel w2"></div><div class="wheel w3"></div><div class="wheel w4"></div>
-    </div>
-    <div class="overlay">
-      <div class="travelText">
-        RETURN SEQUENCE INITIATED
-        <div class="progress"><div class="bar"></div></div>
-      </div>
-    </div>
-  </section>
+<section id="game" class="crt hidden">
+<div class="hud pixel"><span>MS2</span><span>DISTANCE <b id="score">00000</b></span><span>SOUND ON</span></div>
+<div id="stage" class="stage">
+<div class="starfield"></div><div class="moon"></div><div class="mountain"></div>
+<div id="message" class="pixel">RETURN SEQUENCE ACTIVE</div>
+<div id="train" class="train"><div class="smoke">▪▪</div><div class="car"></div><div class="engine"></div><div class="wheel w1"></div><div class="wheel w2"></div><div class="wheel w3"></div></div>
+<div id="obstacle" class="obstacle"></div><div id="sign" class="sign pixel">HOME →</div><div id="flower" class="flower">🌻</div>
+<div class="ground"></div><div class="sleepers"></div><div id="tap" class="pixel">TAP TO JUMP</div>
+</div>
+</section>
 
-  <section id="final">
-    <div class="finalInner">
-      <div class="end">END OF LINE</div>
-      <div class="big">FELIZ REGRESO</div>
-      <div class="flower">🌻</div>
-      <div class="small">MS2 // SIGNAL DELIVERED</div>
-    </div>
-  </section>
+<section id="final" class="crt hidden">
+<div class="finalSmall pixel">DESTINATION REACHED</div>
+<div id="finalTitle" class="finalTitle pixel">FELIZ REGRESO</div>
+<div class="sun">🌻</div>
+<div class="finalSmall pixel">MS2 // TRANSMISSION COMPLETE</div>
+<button id="again" class="retry pixel" type="button">REPLAY</button>
+</section>
 </div>
 
 <script>
-(() => {
-  const ACCESS_KEY = "VIKINGO";
-  const input = document.getElementById("key");
-  const go = document.getElementById("go");
-  const status = document.getElementById("status");
-  const lock = document.getElementById("lock");
-  const journey = document.getElementById("journey");
-  const final = document.getElementById("final");
+(()=>{
+const $=s=>document.querySelector(s), lock=$('#lock'),game=$('#game'),final=$('#final'),form=$('#form'),input=$('#key'),status=$('#status'),stage=$('#stage'),train=$('#train'),ob=$('#obstacle'),sign=$('#sign'),flower=$('#flower'),scoreEl=$('#score'),message=$('#message');
+let ac=null, started=false, running=false, jumping=false, y=0,vy=0,score=0,last=0,obsX=620,signX=1000,flowerX=1350,hitCooldown=0,raf=0;
 
-  function run() {
-    const value = input.value.trim().toUpperCase();
-    if (!value) {
-      status.textContent = "KEY REQUIRED.";
-      status.className = "status denied";
-      return;
-    }
-    if (value !== ACCESS_KEY) {
-      status.textContent = "ACCESS DENIED // INVALID KEY";
-      status.className = "status denied";
-      lock.classList.remove("flash");
-      void lock.offsetWidth;
-      lock.classList.add("flash");
-      input.select();
-      return;
-    }
+function audio(){if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C()} if(ac&&ac.state==='suspended')ac.resume()}
+function tone(freq,dur=.08,type='square',vol=.055,delay=0){
+ if(!ac)return; const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+dur)
+}
+function noise(dur=.09,vol=.035){
+ if(!ac)return; const n=ac.sampleRate*dur,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1);const s=ac.createBufferSource(),g=ac.createGain();s.buffer=b;g.gain.value=vol;s.connect(g);g.connect(ac.destination);s.start()
+}
+function boot(){tone(220,.05);tone(330,.05,'square',.05,.06)}
+function denied(){tone(120,.12,'sawtooth',.05);tone(90,.18,'square',.04,.1);noise(.08,.02)}
+function granted(){[262,330,392,523].forEach((f,i)=>tone(f,.09,'square',.055,i*.09))}
+function jumpSound(){tone(520,.05);tone(760,.07,'square',.045,.045)}
+function hitSound(){noise(.12,.045);tone(105,.13,'square',.04)}
+function finishSound(){[392,523,659,784,1047].forEach((f,i)=>tone(f,i===4?.24:.09,'square',.055,i*.11))}
+function tick(){tone(900,.025,'square',.018)}
 
-    status.textContent = "ACCESS GRANTED";
-    status.className = "status granted";
-    input.blur();
-
-    setTimeout(() => {
-      lock.style.display = "none";
-      journey.style.display = "block";
-      journey.setAttribute("aria-hidden","false");
-      setTimeout(() => {
-        final.style.display = "flex";
-      }, 6500);
-    }, 650);
-  }
-
-  go.addEventListener("click", run);
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") run();
-  });
-
-  setTimeout(() => input.focus(), 450);
+form.addEventListener('submit',e=>{
+ e.preventDefault(); audio(); const k=input.value.trim().toUpperCase();
+ if(k!=='VIKINGO'){status.textContent=k?'ACCESS DENIED // INVALID KEY':'KEY REQUIRED';denied();input.select();return}
+ status.textContent='ACCESS GRANTED';granted();
+ setTimeout(startGame,650)
+});
+function startGame(){
+ lock.classList.add('hidden');final.classList.add('hidden');game.classList.remove('hidden');running=true;started=true;jumping=false;y=0;vy=0;score=0;obsX=stage.clientWidth+120;signX=stage.clientWidth+520;flowerX=stage.clientWidth+900;last=performance.now();message.textContent='RETURN SEQUENCE ACTIVE';cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+}
+function jump(){
+ if(!running||jumping)return;audio();jumping=true;vy=12.5;jumpSound()
+}
+stage.addEventListener('pointerdown',e=>{e.preventDefault();jump()});
+document.addEventListener('keydown',e=>{if(started&&e.code==='Space'){e.preventDefault();jump()}});
+function loop(now){
+ if(!running)return; const dt=Math.min(2,(now-last)/16.67);last=now;score+=.52*dt;
+ if(jumping){y+=vy*dt;vy-=.72*dt;if(y<=0){y=0;vy=0;jumping=false}}
+ train.style.transform=`translateY(${-y}px)`;
+ const speed=4.6*dt;obsX-=speed;signX-=speed*.72;flowerX-=speed*.68;
+ if(obsX<-60)obsX=stage.clientWidth+260+Math.random()*240;
+ if(signX<-160)signX=stage.clientWidth+700;
+ if(flowerX<-90)flowerX=stage.clientWidth+900;
+ ob.style.right='auto';ob.style.left=obsX+'px';sign.style.right='auto';sign.style.left=signX+'px';flower.style.right='auto';flower.style.left=flowerX+'px';
+ const trainLeft=stage.clientWidth*(stage.clientWidth<=420?.07:.12), tx1=trainLeft,tx2=trainLeft+120;
+ if(hitCooldown>0)hitCooldown-=dt;
+ if(obsX<tx2&&obsX+36>tx1&&y<42&&hitCooldown<=0){hitCooldown=50;stage.classList.remove('flash');void stage.offsetWidth;stage.classList.add('flash');hitSound();message.textContent='SIGNAL INTERRUPTED // CONTINUE'}
+ if(Math.floor(score)%25===0&&Math.floor(score)!==0&&Math.floor(score)%50!==0)tick();
+ scoreEl.textContent=String(Math.floor(score)).padStart(5,'0');
+ if(score>=180){finish();return}
+ raf=requestAnimationFrame(loop)
+}
+function finish(){
+ running=false;cancelAnimationFrame(raf);message.textContent='DESTINATION REACHED';finishSound();
+ setTimeout(()=>{game.classList.add('hidden');final.classList.remove('hidden');typeFinal()},700)
+}
+function typeFinal(){
+ const el=$('#finalTitle'),text='FELIZ REGRESO';el.textContent='';let i=0;
+ const id=setInterval(()=>{el.textContent+=text[i++]||'';tone(700+(i*22),.025,'square',.018);if(i>=text.length)clearInterval(id)},85)
+}
+$('#again').addEventListener('click',()=>{audio();boot();setTimeout(startGame,150)});
 })();
 </script>
 </body>
